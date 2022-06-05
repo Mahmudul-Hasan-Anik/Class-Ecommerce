@@ -51,6 +51,7 @@ const Compare = () => {
       const handleCompare = async(params)=>{
         const product = await axios.get(`/product/${params.slug}`)
         setComProduct(product.data)
+        console.log(product.data)
       }
 
       const handleCompare2 = async(params)=>{
@@ -72,7 +73,7 @@ const Compare = () => {
                     <Dropdown.Item onClick={()=>handleCompare(item)}>
                       <Row>
                         <Col>
-                          <img src={item.img} style={{width:"70px"}}/>
+                          <img src={item.image} style={{width:"70px"}}/>
                         </Col>
                         <Col>
                         <p>{item.name}</p>
@@ -84,7 +85,7 @@ const Compare = () => {
             </Dropdown>
                   {comProduct? 
                   <Card style={{ width: '28rem' }} className='mt-3'>
-                  <Card.Img  src={comProduct.img} />
+                  <Card.Img  src={comProduct.image} />
                   <Card.Body>
                       <Card.Title>{comProduct.name}</Card.Title>
                       <Card.Title>
@@ -112,7 +113,7 @@ const Compare = () => {
                     <Dropdown.Item onClick={()=>handleCompare2(item)}>
                       <Row>
                         <Col>
-                          <img src={item.img} style={{width:"70px"}}/>
+                          <img src={item.image} style={{width:"70px"}}/>
                         </Col>
                         <Col>
                         <p>{item.name}</p>
@@ -124,7 +125,7 @@ const Compare = () => {
             </Dropdown>
                   {comProduct2? 
                   <Card style={{ width: '28rem' }} className='mt-3'>
-                  <Card.Img  src={comProduct2.img} />
+                  <Card.Img  src={comProduct2.image} />
                   <Card.Body>
                       <Card.Title>{comProduct2.name}</Card.Title>
                       <Card.Title>

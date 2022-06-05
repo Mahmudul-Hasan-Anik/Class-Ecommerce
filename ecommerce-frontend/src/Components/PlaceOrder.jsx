@@ -174,7 +174,7 @@ const Placeholder = () => {
 
              {state.cart.cartItems.map((item)=>(
                 <Row className='mb-3'>
-                  <Col><img src={item.img} style={{width:'150px',height:'100px'}}/></Col>
+                  <Col><img src={item.image} style={{width:'150px',height:'100px'}}/></Col>
                   <Col>
                   <p><b>Name : </b>{item.name}</p>
                   <p><b>Price : </b>{item.price}$</p>

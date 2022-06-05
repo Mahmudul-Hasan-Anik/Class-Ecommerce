@@ -14,11 +14,12 @@ export const Header = () => {
   const {state,state2,state3,dispatch3} = useContext(Store)
 
   const {userInfo} = state3
-  console.log(userInfo.isVandor)
+ 
 
   const handleLogout = ()=>{
     dispatch3({type: 'USER_LOGOUT'})
     localStorage.removeItem('userInfo')
+    navigate('/')
   }
 
   const handleDashboard = ()=>{
@@ -27,6 +28,10 @@ export const Header = () => {
 
   const handleVandor = ()=>{
     navigate('/vandor')
+  }
+
+  const handleVartualCard = ()=>{
+    navigate('/vartualCard')
   }
 
   return(
@@ -64,7 +69,10 @@ export const Header = () => {
                 </Dropdown.Item>
               }
               
-             
+              <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleVartualCard}>
+                 Vartual Card
+              </Dropdown.Item>
+              
               <Dropdown.Divider />
               <Dropdown.Item className='profile_button' style={{background:'gray'}} onClick={handleLogout}>Logout</Dropdown.Item>
             </DropdownButton>

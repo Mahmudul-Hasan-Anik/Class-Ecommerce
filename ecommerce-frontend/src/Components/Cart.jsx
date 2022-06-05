@@ -60,7 +60,7 @@ const {cart:{cartItems}} = state
                  <CardMedia
                          component="img"
                          sx={{ width: 80}}
-                         image={item.img}
+                         image={item.image}
                          alt="Live from space album cover"
                        />
      

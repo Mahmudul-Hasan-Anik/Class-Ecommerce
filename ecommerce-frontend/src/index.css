@@ -96,4 +96,38 @@ a{
  border: 1px solid black;
  margin-top: 10px;
  padding: 40px;
+ height: 500px;
+
+}
+.vartual_card-main{
+  width: 500px;
+  height: 320px;
+  margin: 0 auto;
+  border: 1px solid gray;
+  padding: 30px;
+  border-radius: 10px;
+}
+.vartual_card-main h4{
+  text-align: center;
+  background-color: aquamarine;
+  padding: 10px 0px;
+  color: black;
+}
+.show_own_product tr, td{
+  width: 100px;
+  text-align: center;
+}
+.vartual_card-sidebar{
+  box-shadow: 0px 0px 5px 0px black;
+  width: 300px;
+  height: 650px; 
+  padding-top: 50px;
+}
+.vartual_card-sidebar h5{
+  text-align: center;
+}
+.vartual_card-sidebar p{
+  padding-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }

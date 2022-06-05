@@ -47,9 +47,11 @@ const ProductDetails = () => {
 
     try{
       const product =  await axios.get(`${params.slug}`)
+   
       dispatch({type: 'FATCH_SUCCESS', payload: product.data})
 
       const relatedProduct =  await axios.get(`/product`)
+      // console.log(relatedProduct)
       const filterItem = relatedProduct.data.filter((item)=>(
         item.catagory == product.data.catagory && item.name !== product.data.name
       ))
@@ -125,7 +127,7 @@ const settings = {
           {product?
           <>
           <Col sm={5} >
-            <InnerImageZoom src={product.img} zoomSrc={product.img}/>
+            <InnerImageZoom src={product.image} zoomSrc={product.image}/>
           </Col>
           <Col sm={7}>
           <>
@@ -177,7 +179,7 @@ const settings = {
             <Col>
             <Link to={`/product/${item.slug}`}>
               <Card sx={{ maxWidth: 345 }}>
-                <CardMedia component="img" height="160" image={item.img}/>
+                <CardMedia component="img" height="160" image={item.image}/>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     {item.name}

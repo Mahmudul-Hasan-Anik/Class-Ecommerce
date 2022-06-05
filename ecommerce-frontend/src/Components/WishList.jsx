@@ -49,7 +49,7 @@ const WishList = () => {
                           <CardMedia
                             component="img"
                             sx={{ width: 152}}
-                            image={item.img}
+                            image={item.image}
                             alt="Live from space album cover"
                           />
         

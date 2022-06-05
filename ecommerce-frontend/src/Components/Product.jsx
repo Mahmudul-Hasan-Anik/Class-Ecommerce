@@ -38,6 +38,7 @@ const Product = () => {
     try{
       const product =  await axios.get(`/product`)
       dispatch({type: 'FATCH_SUCCESS', payload: product.data})
+
     }catch(e){
       dispatch({type: 'FATCH_FAILS', payload:e.message})
     }
@@ -55,7 +56,7 @@ const Product = () => {
       const existingItems = cart.cartItems.find((item)=> item._id === product._id)
       const quantity = existingItems ? existingItems.quantity + 1 : 1
 
-      const {data} = await axios.get(`/product/${product._id}`)
+      const {data} = await axios.get(`/product/indivi/${product._id}`)
       
       if(data.stock < quantity){
         window.alert(`${product.name} is out of Stock`)
@@ -73,7 +74,7 @@ const Product = () => {
       const existingItems = wishList.wishListItems.find((item)=> item._id === product._id)
       const quantity = existingItems ? existingItems.quantity + 1 : 1
 
-      const {data} = await axios.get(`/product/${product._id}`)
+      const {data} = await axios.get(`/product/indivi/${product._id}`)
       
       if(data.stock < quantity){
         window.alert(`${product.name} is out of Stock`)
@@ -123,7 +124,7 @@ const Product = () => {
              <Col className='mb-4' key={item._id}>
                 <Card >
                   <Link to={`/product/${item.slug}`}>
-                    <Card.Img variant="top" src={item.img} />
+                    <Card.Img variant="top" src={item.image} style={{width:'100%',height:'300px'}}/>
                   </Link> 
                     <Card.Body>
                         <Card.Title>

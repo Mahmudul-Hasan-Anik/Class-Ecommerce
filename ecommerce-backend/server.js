@@ -10,6 +10,9 @@ import OrderRouter from './routes/OrderRouter.js';
 import mongoose from 'mongoose';
 import Product from './modals/Database.js';
 import StoreRouter from './routes/StoreRoutes.js';
+import VartualRouter from './routes/VartualRoutes.js';
+import path from 'path';
+import {fileURLToPath } from 'url'
 
 const app = express()
 
@@ -20,11 +23,21 @@ mongoose.connect(process.env.MONGO_DB_URL, ()=>{
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+// const __filename = fileURLToPath(import.meta.url)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+console.log(__dirname)
+
+app.use("/upload", express.static(path.join(__dirname, 'uploads'))); 
+
 app.use('/api/seed', seedRouter)
 app.use('/product', ProductRouter)
 app.use('/api/auth', Auth)
 app.use('/api/orders', OrderRouter)
 app.use('/api', StoreRouter)
+app.use('/api', VartualRouter)
+
 
 //paypal
 app.get('/api/keys/paypal', (req,res)=>{
@@ -33,9 +46,9 @@ app.get('/api/keys/paypal', (req,res)=>{
 
 
 // comment few moment later
-app.get('/product', (req, res)=>{
-  res.send(productData)
-})
+// app.get('/product', (req, res)=>{
+//   res.send(productData)
+// })
 
 app.get('/discount', (req, res)=>{
   res.send(discount)
@@ -55,30 +68,38 @@ app.get('/catagory/:catagory', (req, res)=>{
 
 
 // comment few moment later
-app.get('/product/:slug', (req, res)=>{
+// app.get('/product/:slug', (req, res)=>{
 
-  let product = productData.find((item)=>{
-    if(item.slug == req.params.slug ){
-      return item
-    }
-  })
-  res.send(product)
-})
+//   let product = productData.find((item)=>{
+//     if(item.slug == req.params.slug ){
+//       return item
+//     }
+//   })
+//   res.send(product)
+// })
 
 // comment few moment later
-app.get('/product/:id', (req, res)=>{
+// app.get('/product/:id', (req, res)=>{
 
-  let product = productData.find((item)=>{
-    if(item._id == req.params.id ){
-      return item
-    }
-  })
-  res.send(product)
-})
+//   let product = productData.find((item)=>{
+//     if(item._id == req.params.id ){
+//       return item
+//     }
+//   })
+//   res.send(product)
+// })
 
 
 let port = process.env.PORT || 8000
 
+// app.listen(port, ()=>{
+//   console.log(`I am Port ${port}`)
+// })
+
+app.get('/',  (req, res)=> {
+  res.send('Hello World')
+})
+
 app.listen(port, ()=>{
-  console.log(`I am Port 8000`)
+  console.log(`I am Port ${port}`)
 })

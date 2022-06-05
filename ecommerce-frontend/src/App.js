@@ -18,6 +18,9 @@ import Payment from "./Components/Payment";
 import Order from "./Components/Order.jsx";
 import Dashboard from "./Components/Dashboard";
 import Vandor from "./Components/Vandor";
+import VartualCard from "./Components/VartualCard";
+import ShowOwnerPro from "./Components/ShowOwnerPro";
+import CreateCatagory from "./Components/CreateCatagory";
 
 
 
@@ -47,6 +50,9 @@ function App() {
         <Route path="/orders/:id" element={<Order />}/>    
         <Route path="/dashboard" element={<Dashboard />}/>    
         <Route path="/vandor" element={<Vandor />}/>    
+        <Route path="/vartualCard" element={<VartualCard />}/>    
+        <Route path="/showPro" element={<ShowOwnerPro />}/>    
+        <Route path="/createCatagory" element={<CreateCatagory />}/>    
       </Routes>
     </BrowserRouter>
     </>

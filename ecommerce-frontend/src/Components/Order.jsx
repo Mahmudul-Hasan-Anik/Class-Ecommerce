@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Alert, Container,Card,ListGroup,Row,Col } from 'react-bootstrap'
+import { Alert, Container,Card,ListGroup,Row,Col, Button } from 'react-bootstrap'
 import { Store } from '../userContext'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import axios from 'axios'
@@ -170,8 +170,12 @@ useEffect(()=>{
               payload: error
           })
       }
+  }
 
-
+  const handleVartualCard = ()=>{
+    axios.post(`/api/card/${userInfo._id}`,{
+      price: order.totalPrice
+    })
   }
 
   return (
@@ -222,7 +226,7 @@ useEffect(()=>{
                       <ListGroup.Item>
                         <Row>
                           <Col lg={6}>
-                            <img src={item.img} alt="image" style={{width:'60%'}}/>
+                            <img src={item.image} alt="image" style={{width:'60%'}}/>
                           </Col>
                           <Col lg={3}>
                             <Link to={`/product/${item.slug}`}>{item.name}</Link><br/>
@@ -280,6 +284,10 @@ useEffect(()=>{
                         amount={order.totalPrice * 100} 
                      />
                      
+                    }
+
+                    {order.paymenOption == 'vartualCard' &&
+                      <Button style={{width:'300px', height:'100px',fontSize:'20px'}} onClick={handleVartualCard}>Vartual Card</Button>
                     }
                         
                   </Col>

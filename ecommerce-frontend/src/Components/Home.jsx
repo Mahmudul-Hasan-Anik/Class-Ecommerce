@@ -79,7 +79,7 @@ const Home = () => {
         <Col className='mb-4'>
         <Card >
           <Link to={`/product/${item.slug}`}>
-            <Card.Img variant="top" src={item.img} />
+            <Card.Img variant="top" src={item.image} />
           </Link> 
             <Card.Body>
                 <Card.Title>

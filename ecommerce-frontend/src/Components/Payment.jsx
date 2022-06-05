@@ -34,7 +34,6 @@ const Payment = () => {
         <Alert variant='info' style={{textAlign:'center'}}>
             <h5>Choose Payment Option</h5>
         </Alert>
-
         <Form.Check 
             type="radio"
             label='Paypal'
@@ -57,6 +56,14 @@ const Payment = () => {
             id='sslcommerz'
             value='Sslcommerz'
             checked={payment == 'Sslcommerz'}
+            onChange={(e)=>setPayment(e.target.value)}
+        />
+        <Form.Check 
+            type="radio"
+            label='vartual Card'
+            id='vartualCard'
+            value='vartualCard'
+            checked={payment == 'vartualCard'}
             onChange={(e)=>setPayment(e.target.value)}
         />
 

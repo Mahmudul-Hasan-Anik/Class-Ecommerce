@@ -1,15 +1,18 @@
-import React,{useContext, useEffect, useState} from 'react'
+import React,{useContext, useEffect, useState,useRef} from 'react'
 import { useNavigate,Link } from 'react-router-dom'
 import { Store } from '../userContext'
 import { Row, Col, Nav,Form, Button } from 'react-bootstrap'
 import axios from 'axios'
 import {  toast } from 'react-toastify';
+import MyEditor from './MyEditor'
+
 
 const Dashboard = () => {
     const nagivate = useNavigate()
     const {state3} = useContext(Store)
     const {userInfo} = state3
     
+    const [file, setFile] = useState('')
     const [showStore, setShowStore] = useState(false)
     const [store, setStore] = useState('')
 
@@ -18,7 +21,6 @@ const Dashboard = () => {
       name: '',
       price: '',
       slug: '',
-      image: '',
       desciption: '',
       stock: '',
       catagory:'',
@@ -38,6 +40,7 @@ const Dashboard = () => {
   // Store Creation
     const handleStore = ()=>{
       setShowStore(true)
+      setShowProduct(false)
     }
     const handleStoreSubmit = async(e)=>{
       e.preventDefault()
@@ -58,6 +61,7 @@ const Dashboard = () => {
   // Product Creation
   const handleProduct = ()=>{
     setShowProduct(true)
+    setShowStore(false)
   }
 
   const handleChange = (e) =>{
@@ -67,18 +71,27 @@ const Dashboard = () => {
   const handleProductSubmit = async(e)=>{
     e.preventDefault()
 
-    await axios.post('product', {
-      name: value.name,
-      price: value.price,
-      slug: value.slug,
-      image: value.image,
-      desciption: value.desciption,
-      stock: value.stock,
-      catagory: value.catagory,
-      coupon: value.coupon,
-      discount: value.discount,
-      discountLimit: value.discountLimit
-    })
+    const formData = new FormData()
+    formData.append('name', value.name)
+    formData.append('price', value.price)
+    formData.append('slug', value.slug)
+    formData.append('image', file)
+    formData.append('stock', value.stock)
+    formData.append('catagory', value.catagory)
+    formData.append('coupon', value.coupon)
+    formData.append('discount', value.discount)
+    formData.append('discountLimit', value.discountLimit)
+    formData.append('desciption', value.desciption)
+    formData.append('owner', userInfo._id)
+
+    await axios.post('/product', formData)
+  }
+
+  // Show your product
+  const handleYourProduct = ()=>{
+    console.log('click')
+
+    nagivate('/showPro')
   }
 
  
@@ -93,9 +106,12 @@ const Dashboard = () => {
       <Row>
         <Col  md={2} className='dashboard_nav-div'>
           <Nav className="flex-column">
+
+            <Nav.Link onClick={handleYourProduct}>Your Product</Nav.Link>
             <Nav.Link onClick={handleStore}>Store</Nav.Link>
             <Nav.Link onClick={handleProduct}>Create Product</Nav.Link>
             <Nav.Link >Payment</Nav.Link>
+            <Nav.Link ><Link to='/createCatagory'>Create Catagory</Link></Nav.Link>
           </Nav>
         </Col>
 
@@ -104,7 +120,7 @@ const Dashboard = () => {
           &&
 
             <Form className="p-3">
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" >
                   <Form.Label>Create Store Name</Form.Label>
                   <Form.Control type="text" placeholder="Enter Name" onChange={(e)=>setStore(e.target.value)} value={store}/>
                 </Form.Group>
@@ -115,7 +131,7 @@ const Dashboard = () => {
           {showProduct 
           &&
 
-          <Form className=" product_from">
+          <Form className=" product_from" >
             <Row className="mb-3">
               <Form.Group as={Col} >
                 <Form.Label>Product Name</Form.Label>
@@ -124,7 +140,7 @@ const Dashboard = () => {
 
               <Form.Group as={Col} >
                 <Form.Label>Price</Form.Label>
-                <Form.Control name='price' type="number" placeholder="Password"  onChange={handleChange} />
+                <Form.Control name='price' type="number" placeholder="Price"  onChange={handleChange} />
               </Form.Group>
 
               <Form.Group as={Col} >
@@ -136,27 +152,22 @@ const Dashboard = () => {
             <Row className="mb-3">
               <Form.Group as={Col} >
                 <Form.Label>Product Image</Form.Label>
-                <Form.Control name='image' type="file" placeholder="upload image"  onChange={handleChange} />
-              </Form.Group>
-
-              <Form.Group as={Col} >
-                <Form.Label>Product Desciption</Form.Label>
-                <Form.Control name='desciption' type="text" placeholder="Enter Desciption"  onChange={handleChange} />
+                <Form.Control name='image' type="file" placeholder="upload image"  onChange={(e)=>setFile(e.target.files[0])} />
               </Form.Group>
 
               <Form.Group as={Col} >
                 <Form.Label>Stock</Form.Label>
                 <Form.Control name='stock' type="number" placeholder="Product Stock"  onChange={handleChange} />
               </Form.Group>
-            </Row>
 
-
-            <Row className="mb-3">
               <Form.Group as={Col}>
                 <Form.Label>Catagory</Form.Label>
                 <Form.Control name='catagory' type='text' placeholder='Product Catagory' onChange={handleChange} />
               </Form.Group>
+            </Row>
 
+
+            <Row className="mb-3">
               <Form.Group as={Col} >
                 <Form.Label>Coupon</Form.Label>
                 <Form.Control name='coupon' type='text' placeholder='Enter Coupon' onChange={handleChange} />
@@ -166,12 +177,20 @@ const Dashboard = () => {
                 <Form.Label>Discount</Form.Label>
                 <Form.Control name='discount' type='number' placeholder='Product Discount' onChange={handleChange} />
               </Form.Group>
+
+              <Form.Group as={Col} >
+                <Form.Label>Discount Limit</Form.Label>
+                <Form.Control name='discountLimit' type='number' placeholder='Discount Limit' onChange={handleChange} />
+              </Form.Group>
             </Row>
 
             <Form.Group className="mb-3" >
-              <Form.Label>Discount Limit</Form.Label>
-              <Form.Control name='discountLimit' type='number' placeholder='Discount Limit' onChange={handleChange} />
-            </Form.Group>
+                <Form.Label>Product Desciption</Form.Label>
+                <Form.Control name='desciption' type="text" placeholder="Enter Desciption"  onChange={handleChange} />
+            
+                  {/* <MyEditor name='desciption' onChange={handleChange}/> */}
+             
+              </Form.Group>
 
             <Button variant="primary" type="submit" onClick={handleProductSubmit}>
               Submit

@@ -17,7 +17,7 @@ OrderRouter.post('/',isAuth, async(req, res)=>{
         shippingPrice: req.body.shippingPrice,
         tax: req.body.tax,
         totalPrice: req.body.totalPrice,
-        users: req.body.users._id
+        users: req.body.user
     })
     
     const order = await response.save()
