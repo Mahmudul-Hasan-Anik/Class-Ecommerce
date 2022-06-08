@@ -18,7 +18,7 @@ VartualRouter.post('/card', (req,res)=>{
 })
 
 VartualRouter.get('/card',(req,res)=>{
-    VartualCard.find({}, (err,docs)=>{
+    VartualCard.findOne({}, (err,docs)=>{
         if(docs){
             res.send(docs)
         }else{
@@ -27,9 +27,22 @@ VartualRouter.get('/card',(req,res)=>{
     })
 })
 
-VartualRouter.put('/card/update', (req,res)=>{
-    // VartualCard.findByIdAndUpdate({owner: req.body.id})
-    console.log(req.body.owner)
+// UPDATE EXISTING BALANCE WITH NEW ONE
+VartualRouter.patch('/card/update/:id', (req,res)=>{
+
+    VartualCard.find({_id: req.params.id}, (err,docs)=>{
+        const newBalance = {
+            amount: Number(req.body.amount) + Number(docs[0].amount),
+        }
+
+    VartualCard.findByIdAndUpdate({_id: req.params.id}, newBalance,{new: true}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json({msg:'Data not Update'})
+        }
+    })
+  })
 })
 
 //FOR UPDATE AFTER PAYMENT

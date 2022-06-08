@@ -23,9 +23,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-
 })
-
 
 const User = mongoose.model('users',userSchema)
 export default User

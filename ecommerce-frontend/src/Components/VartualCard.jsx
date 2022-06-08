@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { Container, Form, Button,Row,Col } from 'react-bootstrap'
+import { Modal, Form, Button,Row,Col } from 'react-bootstrap'
 import {Store} from '../userContext'
 
 
@@ -11,7 +11,12 @@ const VartualCard = () => {
 
     const {state3} = useContext(Store)
     const {userInfo} = state3
-    console.log(userInfo.name)
+
+    //MODEL RELATED STATE START
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
+     //MODEL RELATED STATE END
 
     const handleAddmoney = (e)=>{
         e.preventDefault()
@@ -22,10 +27,8 @@ const VartualCard = () => {
         //     owner: userInfo._id
         // })
 
-        axios.put(`/api/card/update`,{
+        axios.patch(`/api/card/update/${value._id}`,{
             amount: amount,
-            source: payment,
-            owner: userInfo._id
         })
     }
 
@@ -35,18 +38,20 @@ const VartualCard = () => {
            setValue(data)
         }
         fatchData()
+
     },[])
 
-   
+    const handleShow = (e)=>{
+        console.log(e.target.value)
+        setShow(true)
+    }
+
   return (
     <>
-<Row>
+        <Row>
         <Col className='vartual_card-sidebar' md='2'>
-            <h5>{userInfo.name}</h5>
-            {value.map((item)=>(
-                
-                <p>Balance : ${item.amount} </p>
-            ))}
+            <h5>{userInfo.name}</h5>    
+            <p>Balance : ${value.amount} </p>
         </Col>
        
 
@@ -69,6 +74,7 @@ const VartualCard = () => {
                     value='paypal'
                     checked={payment == 'paypal'}
                     onChange={(e)=>setPayment(e.target.value)}
+                    onClick={handleShow}
                 />
                 <Form.Check
                     inline
@@ -78,6 +84,7 @@ const VartualCard = () => {
                     value='strip'
                     checked={payment == 'strip'}
                     onChange={(e)=>setPayment(e.target.value)}
+                    onClick={handleShow}
                 />
                 <Form.Check
                     inline
@@ -87,6 +94,7 @@ const VartualCard = () => {
                     value='datchBangla'
                     checked={payment == 'datchBangla'}
                     onChange={(e)=>setPayment(e.target.value)}
+                    onClick={handleShow}
                 />
             </Form.Group>
            
@@ -96,6 +104,15 @@ const VartualCard = () => {
         </Form>
         </Col>
         </Row>
+
+
+        {/* //-----------------SHOW RECHARGE---------------// */}
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>Add Money From your selected Source</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        </Modal>
     </>
   )
 }
