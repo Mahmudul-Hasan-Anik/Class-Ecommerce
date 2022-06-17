@@ -37,6 +37,8 @@ const Product = () => {
 
     try{
       const product =  await axios.get(`/product`)
+
+      console.log(product)
       dispatch({type: 'FATCH_SUCCESS', payload: product.data})
 
     }catch(e){
@@ -45,10 +47,11 @@ const Product = () => {
   }, [])
 
 
-  const {state,dispatch: contextDispatch, state2,dispatch2} = useContext(Store)
+  const {state,dispatch: contextDispatch, state2,dispatch2,state3} = useContext(Store)
 
     const {cart} = state
     const {wishList} = state2
+    const {userInfo} = state3
     
     const handleCart = async(product)=>{
     
@@ -123,17 +126,24 @@ const Product = () => {
         product.map((item)=>( 
              <Col className='mb-4' key={item._id}>
                 <Card >
-                  <Link to={`/product/${item.slug}`}>
                     <Card.Img variant="top" src={item.image} style={{width:'100%',height:'300px'}}/>
-                  </Link> 
+                
                     <Card.Body>
                         <Card.Title>
-                  <Link to={`/product/${item.slug}`}>
-                          {item.name}
-                  </Link>
+                          {userInfo 
+                          ?
+                          <Link to={userInfo.isAffilate? `/product/${item.slug}?id=${userInfo._id}`: `/product/${item.slug}`}>
+                            {item.name}
+                          </Link>
+                          :
+                          <Link to={`/product/${item.slug}`}>
+                            {item.name}
+                          </Link>
+                          }
                         </Card.Title>
+                        
                         <Card.Text>
-                          <BasicRating rating={item.rating} nameOfRating={item.nameOfRating}/>
+                          <BasicRating rating={item.ratings.ratings} nameOfRating={item.nameOfRating}/>
                         </Card.Text>
                         <Card.Text>
                         {item.desciption}

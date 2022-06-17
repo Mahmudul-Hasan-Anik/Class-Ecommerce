@@ -1,14 +1,12 @@
 import express from 'express'
 import multer from 'multer'
 import Product from '../modals/Database.js'
+import User from '../modals/userModals.js'
 import path from 'path'
+import Affiliate from '../modals/AffiliateModals.js'
+import RatingData from '../modals/Rating.js'
 
 const ProductRouter = express.Router()
-
-ProductRouter.get('/', async(req, res)=>{
-    const product = await Product.find()
-    res.send(product) 
-})
 
 //FILE UPLOADING CODE START HERE
 const storage = multer.diskStorage({
@@ -60,8 +58,11 @@ ProductRouter.post('/', upload.single('image'), async(req,res)=>{
       coupon: req.body.coupon,
       discount: req.body.discount,
       discountLimit: req.body.discountLimit,
-      owner: req.body.owner
+      owner: req.body.owner,
+      rating: req.body.rating
     })
+
+    console.log(newProduct)
     await newProduct.save().then(()=>{
         res.status(200).json({msg:'Data sent Successful'})
     }).catch((err)=>{
@@ -70,26 +71,52 @@ ProductRouter.post('/', upload.single('image'), async(req,res)=>{
     
 })
 
-ProductRouter.get('/', async(req,res)=>{
-    Product.find({}, (err,docs)=>{
+ProductRouter.get('/',   function (req, res) {
+    Product.find({}).populate({path: 'ratings', model: RatingData}).exec(function(err,docs){
         if(docs){
             res.send(docs)
         }else{
-            res.status(400).json({msg:'Data sent failed'})
+            res.status(400).json({msg:'Data not send...'})
         }
     })
-})
+  })
 
 
-ProductRouter.get('/:slug', (req,res)=>{
-    Product.findOne({slug: req.params.slug}, (err,docs)=>{
-        if(docs){
-            res.send(docs)
-        }else{
-            res.status(401).json({msg:'Slug not find'})
-        }
-    })
+ProductRouter.get('/:slug', async(req,res)=>{
+    if(!req.query.id){
+        const user = await User.findById(req.query.id)
+        if(user.isAffilate){
+            const product = await Product.findOne({slug: req.params.slug})
+            if(product){
+                res.send(product)
+    
+                const affiliate = new Affiliate({
+                    amount: (product.price*10)/100,
+                    owner: req.query.id
+                })
+                affiliate.save()
+            }
+          
+        }   
+    }else{
+            Product.findOne({slug: req.params.slug}, (err,docs)=>{
+            if(docs){
+                res.send(docs)
+            }else{
+                res.status(401).json({msg:'Slug not find'})
+            }
+        })
+    }
+
 })
+
+//FOR AFFILIATE GET LINK
+ProductRouter.get('/affiliate/info/:id',async(req,res)=>{
+     const data = await Affiliate.find({owner: req.params.id})
+     res.send(data)
+})
+
+//END AFFILIATE GET LINK
 
 ProductRouter.get('/indivi/:id', (req,res)=>{
     Product.findById({_id: req.params.id}, (err,docs)=>{
@@ -111,6 +138,23 @@ ProductRouter.get('/show/:owner', (req,res)=>{
     })
 })
 
+
+// FOR REVIEWS AND RATING
+
+ProductRouter.post('/rating',async(req,res)=>{
+    const newRating = new RatingData({
+        owner: req.body.owner,
+        ratings: req.body.ratings,
+        productId: req.body.productId,
+        reviews: req.body.reviews
+    })
+     newRating.save()
+
+   const test = await Product.findOne({_id: newRating.productId})
+     Product.findOneAndUpdate({_id: test._id}, {ratings: newRating._id},{new:true}, (err,docs)=>{
+      console.log(docs,'ignore kor')
+   })
+})
 
 
 

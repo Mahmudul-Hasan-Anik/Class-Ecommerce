@@ -27,8 +27,6 @@ app.use(express.urlencoded({extended: true}))
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-console.log(__dirname)
-
 app.use("/upload", express.static(path.join(__dirname, 'uploads'))); 
 
 app.use('/api/seed', seedRouter)
@@ -44,11 +42,6 @@ app.get('/api/keys/paypal', (req,res)=>{
   res.send(process.env.PAYPAL_CLIENT || 'sb')
 })
 
-
-// comment few moment later
-// app.get('/product', (req, res)=>{
-//   res.send(productData)
-// })
 
 app.get('/discount', (req, res)=>{
   res.send(discount)
@@ -67,34 +60,9 @@ app.get('/catagory/:catagory', (req, res)=>{
 })
 
 
-// comment few moment later
-// app.get('/product/:slug', (req, res)=>{
-
-//   let product = productData.find((item)=>{
-//     if(item.slug == req.params.slug ){
-//       return item
-//     }
-//   })
-//   res.send(product)
-// })
-
-// comment few moment later
-// app.get('/product/:id', (req, res)=>{
-
-//   let product = productData.find((item)=>{
-//     if(item._id == req.params.id ){
-//       return item
-//     }
-//   })
-//   res.send(product)
-// })
-
 
 let port = process.env.PORT || 8000
 
-// app.listen(port, ()=>{
-//   console.log(`I am Port ${port}`)
-// })
 
 app.get('/',  (req, res)=> {
   res.send('Hello World')

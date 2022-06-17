@@ -24,13 +24,12 @@ const ProductData = new Schema({
         type: String,
         required:true
     },
-    rating:{
-        type: Number,
-        // required:true
+    ratings:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RatingData'
     },
     nameOfRating:{
         type:Number,
-        // required:true
     },
     stock:{
         type: Number,
@@ -55,7 +54,8 @@ const ProductData = new Schema({
     owner:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
-    }
+    },
+    
 },
 {
     timestamps:true

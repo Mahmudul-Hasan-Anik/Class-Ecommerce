@@ -3,16 +3,17 @@ import { useParams } from "react-router-dom"
 import { useEffect,useReducer,useState,useContext } from 'react';
 import axios from 'axios'
 import BasicRating from './Rating';
-import { Container,Row,Col, Button,Alert, Form,InputGroup,FormControl } from 'react-bootstrap';
+import { Container,Row,Col, Button,Alert,InputGroup,FormControl,Form } from 'react-bootstrap';
 import InnerImageZoom from 'react-inner-image-zoom';
 import { Helmet } from 'react-helmet-async';
 import { Badge } from 'react-bootstrap';
 import { Store }  from '../userContext';
 import { Link } from 'react-router-dom';
 import Cart from './Cart'
-import { Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography,Rating,Box } from '@mui/material';
 import { FaArrowLeft,FaArrowRight } from "react-icons/fa";
 import Slider from "react-slick";
+
 
 
 //REDUCER FUNCTION
@@ -30,11 +31,15 @@ function reducer(state, action) {
 }
 
 const ProductDetails = () => {
+  const {state3} = useContext(Store)
   const params = useParams();
   const [relatedProduct, setRelatedProduct] = useState([])
   const [cuponText, setCuponText] = useState('')
   const [cupon, setCupon] = useState('')
   const [cuponError, setCuponError] = useState('')
+  const [start, setStart] = useState('');
+  const [review, setReview] = useState('');
+  const {userInfo} = state3
 
   const [{loading,error,product}, dispatch] = useReducer(reducer, {
     loading: false,
@@ -42,11 +47,20 @@ const ProductDetails = () => {
     product: {}
   });
 
+  
+
   useEffect( async() => {
+    let name;
+    if(userInfo){
+      if(userInfo.isAffilate){
+        name = userInfo._id
+      }
+    }
+
     dispatch({type: 'FATCH_REQUEST'})
 
     try{
-      const product =  await axios.get(`${params.slug}`)
+      const product =  await axios.get(`${params.slug}?id=${name}`)
    
       dispatch({type: 'FATCH_SUCCESS', payload: product.data})
 
@@ -99,10 +113,21 @@ const ProductDetails = () => {
           setCuponError('Referral/discount code not matched')
         }
       }else{
-        setCuponError('There is No discount for this Product')
+          setCuponError('There is No discount for this Product')
       }
     }
 
+    const handleRatingChange = async(e)=>{
+        e.preventDefault()
+
+        await axios.post('/product/rating', {
+          owner: userInfo._id,
+          ratings: start,
+          productId: product._id,
+          reviews: review
+        })
+    }
+    
 //============ FOR REACT SLICK SLIDER ============//
 const settings = {
   dots: false,
@@ -117,6 +142,8 @@ const settings = {
   nextArrow:<FaArrowRight/>
 };
 
+
+console.log(product)
   return (
     <>
       <Container className='mt-5'>
@@ -162,6 +189,7 @@ const settings = {
                   <Button style={{width:'232px',color:'white'}} variant='secondary' onClick={handleCart}>Add to Cart</Button>
                 </Col>
           </Col>
+
         </>
           :
           <Alert variant='danger' className='text-center'>
@@ -188,9 +216,7 @@ const settings = {
                     {item.desciption}
                   </Typography>
                 </CardContent>
-                {/* <CardActions>
-                    <Button className='w-100' variant='secondary'>Check Details</Button>              
-                </CardActions> */}
+
               </Card>
               </Link>
             </Col>
@@ -202,9 +228,33 @@ const settings = {
            </Alert>
           }
         </Row>
+
+            {/* USER REVIEW AND RATING  */}
+        <Form className='mt-3' onSubmit={handleRatingChange}>
+          <h3>Ratings and Reviews</h3><hr/>
+            <h5>Rate Your Experience</h5>
+            <Box sx={{'& > legend': { mt: 2 },}}>
+                <Rating
+                name="rating"
+                value={start}
+                onChange={(e)=>setStart(e.target.value)}
+                />
+            </Box>
+
+            <Form.Group className="mb-3" >
+                <Form.Control 
+                  as="textarea" 
+                  rows={3} 
+                  placeholder='Please write your honest opinion and give rating'
+                  onChange={(e)=>setReview(e.target.value)}
+                />
+            </Form.Group>
+            <Button variant='dark' onClick={handleRatingChange}>Submit</Button>
+        </Form>
       </Container>
 
       <Cart product={product}/>
+      
       </>
   );
 };

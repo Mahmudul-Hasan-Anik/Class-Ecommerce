@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isAffilate:{
+        type: Boolean,
+        default: false
+    }
 })
 
 const User = mongoose.model('users',userSchema)

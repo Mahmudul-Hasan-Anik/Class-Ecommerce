@@ -16,6 +16,7 @@ Auth.post('/signin', async(req,res)=>{
                 email: auth.email,
                 isAdmin: auth.isAdmin,
                 isVandor: auth.isVandor,
+                isAffilate: auth.isAffilate,
                 token: generateToken(auth)
             })
             return
@@ -48,6 +49,16 @@ Auth.put('/:id', async(req,res)=>{
             res.send(docs)
         }else{
             res.status(400).json({msg:'Data not send'})
+        }
+    })
+})
+
+Auth.put('/affiliate/:id', (req,res)=>{
+    User.findByIdAndUpdate({_id: req.params.id}, {isAffilate: true}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json({msg:'Affilate not Find'})
         }
     })
 })

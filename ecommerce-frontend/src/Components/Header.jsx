@@ -34,6 +34,14 @@ export const Header = () => {
     navigate('/vartualCard')
   }
 
+  const handleAffiliate = ()=>{
+    navigate('/affiliate')
+  }
+
+  const handleGetAffiliate = ()=>{
+    navigate('/getAffiliate')
+  }
+
   return(
     <>
     <Navbar bg="dark" variant="dark">
@@ -66,6 +74,16 @@ export const Header = () => {
               :
                 <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleVandor}>
                   Become A vandor
+                </Dropdown.Item>
+              }
+
+              {userInfo.isAffilate ?
+                <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleGetAffiliate}>
+                   Get Affiliate Link
+                </Dropdown.Item>
+               :
+                <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleAffiliate}>
+                  Become a Affiliate
                 </Dropdown.Item>
               }
               

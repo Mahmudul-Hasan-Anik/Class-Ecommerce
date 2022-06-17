@@ -21,6 +21,8 @@ import Vandor from "./Components/Vandor";
 import VartualCard from "./Components/VartualCard";
 import ShowOwnerPro from "./Components/ShowOwnerPro";
 import CreateCatagory from "./Components/CreateCatagory";
+import Affiliate from "./Components/Affiliate";
+import GetAffiliate from "./Components/GetAffiliate";
 
 
 
@@ -52,7 +54,9 @@ function App() {
         <Route path="/vandor" element={<Vandor />}/>    
         <Route path="/vartualCard" element={<VartualCard />}/>    
         <Route path="/showPro" element={<ShowOwnerPro />}/>    
-        <Route path="/createCatagory" element={<CreateCatagory />}/>    
+        <Route path="/createCatagory" element={<CreateCatagory />}/>       
+        <Route path="/affiliate" element={<Affiliate />}/>       
+        <Route path="/getAffiliate" element={<GetAffiliate />}/>       
       </Routes>
     </BrowserRouter>
     </>

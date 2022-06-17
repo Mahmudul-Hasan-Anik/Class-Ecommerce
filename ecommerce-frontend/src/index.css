@@ -58,13 +58,13 @@ a{
   width: 150px;
 }
 .profile_button:hover{
-  color: yellowgreen;
+  color: rgb(31, 3, 14);
 }
 .fix_menu{
   margin-left: 0px !important;
 }
 .fix_menu:hover{
-  color: yellowgreen;
+  color: rgb(31, 3, 14);
 }
 .dropdown-menu{
   width: 200px;
