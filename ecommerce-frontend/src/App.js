@@ -23,6 +23,11 @@ import ShowOwnerPro from "./Components/ShowOwnerPro";
 import CreateCatagory from "./Components/CreateCatagory";
 import Affiliate from "./Components/Affiliate";
 import GetAffiliate from "./Components/GetAffiliate";
+import AdminDashboard from "./Components/AdminDashboard";
+import AdminUserList from "./Components/AdminUserList";
+import AdminProduct from "./Components/AdminProduct";
+import RoleManagement from "./Components/RoleManagement";
+import AdminSignIn from "./Components/AdminSignIn";
 
 
 
@@ -57,6 +62,11 @@ function App() {
         <Route path="/createCatagory" element={<CreateCatagory />}/>       
         <Route path="/affiliate" element={<Affiliate />}/>       
         <Route path="/getAffiliate" element={<GetAffiliate />}/>       
+        <Route path="/admin" element={<AdminDashboard />}/>       
+        <Route path="/adminuserlist" element={<AdminUserList />}/>       
+        <Route path="/adminproduct" element={<AdminProduct />}/>       
+        <Route path="/rolemanagement" element={<RoleManagement />}/>       
+        <Route path="/adminsignin" element={<AdminSignIn />}/>       
       </Routes>
     </BrowserRouter>
     </>

@@ -42,6 +42,10 @@ export const Header = () => {
     navigate('/getAffiliate')
   }
 
+  const handleAdmin = ()=>{
+    navigate('/admin')
+  }
+
   return(
     <>
     <Navbar bg="dark" variant="dark">
@@ -90,6 +94,11 @@ export const Header = () => {
               <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleVartualCard}>
                  Vartual Card
               </Dropdown.Item>
+              {userInfo && 
+                  userInfo.isAdmin 
+                    &&
+                    <Dropdown.Item className='profile_button mt-2' style={{background:'gray'}} onClick={handleAdmin}>Admin</Dropdown.Item>
+              }
               
               <Dropdown.Divider />
               <Dropdown.Item className='profile_button' style={{background:'gray'}} onClick={handleLogout}>Logout</Dropdown.Item>

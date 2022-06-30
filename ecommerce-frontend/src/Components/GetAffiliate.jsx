@@ -8,10 +8,19 @@ const GetAffiliate = () => {
     const {state3} = useContext(Store)
     const {userInfo} = state3
     const [value, setValue] = useState([])
+    const [total, setTotal] = useState('')
+
     useEffect(()=>{
         async function fatchData(){
             const {data} = await axios.get(`/product/affiliate/info/${userInfo._id}`)
             setValue(data)
+
+            let totalAmount = 0
+            data.map((item)=>{
+                totalAmount += item.amount
+                setTotal(totalAmount)
+               
+            })
         }
         fatchData()
     },[])
@@ -33,6 +42,11 @@ const GetAffiliate = () => {
                 <td>{item.amount}</td>
              </tr>   
             ))}
+
+            <tr>
+                <td>Total</td>
+                <td>{total}</td>
+            </tr>
         </tbody>
         </Table>
     </Container>

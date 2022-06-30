@@ -91,6 +91,24 @@ function userReducer(state,action){
     
 }
 
+
+// =============== ADMIN USER LOGIN ============== //
+
+const adminUserState = {
+    adminUser: localStorage.getItem('adminUser') ? JSON.parse(localStorage.getItem('adminUser')) : null
+}
+
+function adminUserReducer(state, action){
+    switch(action.type){
+        case 'ADMIN_USER_LOGIN':
+              return {...state, adminUser: action.payload}
+        case 'ADMIN_USER_LOGOUT':
+              return {...state, adminUser: null}
+        default: 
+              return state
+    }
+}
+
 // ===============FOR SHIPPING PAGE =============//
 const  shippingState = {
     shipping:localStorage.getItem('shipping') ? JSON.parse(localStorage.getItem('shipping')): {}
@@ -129,8 +147,9 @@ const StoreProvider = (props)=>{
     const [state3,dispatch3] = useReducer(userReducer,userState)
     const [state4,dispatch4] = useReducer(shippingReducer,shippingState)
     const [state5,dispatch5] = useReducer(paymentReducer,paymentState)
+    const [adminState,adminDispatch] = useReducer(adminUserReducer,adminUserState)
     
-    const value = {state,dispatch,state2,dispatch2,state3,dispatch3,state4,dispatch4,state5,dispatch5}
+    const value = {state,dispatch,state2,dispatch2,state3,dispatch3,state4,dispatch4,state5,dispatch5,adminState,adminDispatch}
 
     return(
         <>

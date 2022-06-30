@@ -120,7 +120,7 @@ const ProductDetails = () => {
     const handleRatingChange = async(e)=>{
         e.preventDefault()
 
-        await axios.post('/product/rating', {
+        await axios.post(`/product/rating/${product._id}`, {
           owner: userInfo._id,
           ratings: start,
           productId: product._id,

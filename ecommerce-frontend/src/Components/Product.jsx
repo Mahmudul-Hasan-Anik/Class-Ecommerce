@@ -143,7 +143,7 @@ const Product = () => {
                         </Card.Title>
                         
                         <Card.Text>
-                          <BasicRating rating={item.ratings.ratings} nameOfRating={item.nameOfRating}/>
+                          <BasicRating rating={item.ratings? item.ratings.ratings : ''} nameOfRating={item.nameOfRating}/>
                         </Card.Text>
                         <Card.Text>
                         {item.desciption}

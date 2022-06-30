@@ -131,3 +131,14 @@ a{
   font-size: 18px;
   font-weight: bold;
 }
+.admin_menu-main{
+  height: 630px;
+  background-color: rgb(224, 223, 223);
+  padding-top: 10px;
+}
+.admin_menu{
+  width: 100%;
+}
+.admin_menu button{
+  margin-bottom: 8px;
+}

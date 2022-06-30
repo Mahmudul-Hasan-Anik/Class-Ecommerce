@@ -62,7 +62,6 @@ ProductRouter.post('/', upload.single('image'), async(req,res)=>{
       rating: req.body.rating
     })
 
-    console.log(newProduct)
     await newProduct.save().then(()=>{
         res.status(200).json({msg:'Data sent Successful'})
     }).catch((err)=>{
@@ -83,7 +82,7 @@ ProductRouter.get('/',   function (req, res) {
 
 
 ProductRouter.get('/:slug', async(req,res)=>{
-    if(!req.query.id){
+    if(req.query.id){
         const user = await User.findById(req.query.id)
         if(user.isAffilate){
             const product = await Product.findOne({slug: req.params.slug})
@@ -141,19 +140,33 @@ ProductRouter.get('/show/:owner', (req,res)=>{
 
 // FOR REVIEWS AND RATING
 
-ProductRouter.post('/rating',async(req,res)=>{
+ProductRouter.post('/rating/:id',async(req,res)=>{
+    console.log(req.body)
+    
     const newRating = new RatingData({
         owner: req.body.owner,
         ratings: req.body.ratings,
         productId: req.body.productId,
         reviews: req.body.reviews
     })
-     newRating.save()
+    //  newRating.save()
 
-   const test = await Product.findOne({_id: newRating.productId})
-     Product.findOneAndUpdate({_id: test._id}, {ratings: newRating._id},{new:true}, (err,docs)=>{
-      console.log(docs,'ignore kor')
-   })
+     const testing2 = await RatingData.find({productId: req.params.id})
+
+    testing2.map((item)=>{
+        console.log(Number(item.ratings) + Number(req.body.ratings))
+    })
+
+})
+
+ProductRouter.post('/delete/:id', (req,res)=>{
+    Product.findByIdAndDelete({_id:req.params.id}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json({msg:'Product Not Delete'})
+        }
+    })
 })
 
 
